@@ -30,7 +30,7 @@ DEBUG = False
 import os
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-ALLOWED_HOSTS = ['careerconnect.onrender.com']
+ALLOWED_HOSTS = ['careerconnect-3z8g.onrender.com']
 
 # CSRF Settings
 
@@ -40,7 +40,7 @@ CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
-    'https://careerconnect.onrender.com',
+    'https://careerconnect-3z8g.onrender.com',
 ]
 
 
