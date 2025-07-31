@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <title>{% block title %}Home Page{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/home.css' %}">
+</head>
+    <div style="background-color: #9db9e2;">
+    <section class="hero" style="color: ">
+        <div class="particles-container"">
+            <div class="particle" style="background-color: #eddbdb;"></div>
+            <div class="particle"style="background-color: #gdjnk;"></div>
+            <div class="particle"style="background-color: #gdkjnk;"></div>
+            <div class="particle"style="background-color: #ffffff;"></div>
+            <div class="particle"style="background-color: #ffffff;"></div>
+            <div class="particle"style="background-color: #ffffff;"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Find Your Dream Job Today</h1>
+                <p>Thousands of jobs from top companies waiting for you. Start your journey to career success with us.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="location.href='{% url 'jobs' %}'" >Browse Jobs</button>
+                    <button class="btn btn-outline" onclick="location.href='{% url 'jobs' %}'">Post a Job</button>
+                </div>
+            </div>
+            {% comment %} <img class="hero-image" src="https://placehold.co/800x600?text=Candidate+interview+scene" alt="Diverse group of professionals collaborating in a modern office workspace" /> {% endcomment %}
+        </div>
+    </section>
+</div>
+    
+    <section class="jobs-container" style="background-color: #ffffff;">
+        <div class="container">
+            <h2 class="section-title">Featured Job Openings</h2>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="job-title">Job Title</label>
+                    <input type="text" id="job-title" placeholder="e.g. Web Developer">
+                </div>
+                <div class="filter-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" placeholder="Anywhere">
+                </div>
+                <div class="filter-group">
+                    <label for="job-type">Job Type</label>
+                    <select id="job-type">
+                        <option value="">All Types</option>
+                        <option value="full-time">Full-time</option>
+                        <option value="part-time">Part-time</option>
+                        <option value="remote">Remote</option>
+                        <option value="contract">Contract</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="experience">Experience Level</label>
+                    <select id="experience">
+                        <option value="">All Levels</option>
+                        <option value="entry">Entry Level</option>
+                        <option value="mid">Mid Level</option>
+                        <option value="senior">Senior Level</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="job-listings">
+                <div class="job-card">
+                    <img class="job-logo" src="https://placehold.co/100x100?text=Tech+Corp" alt="Tech company logo with blue and white color scheme">
+                    <div class="job-info">
+                        <h3 class="job-title">Senior Frontend Developer</h3>
+                        <p class="job-company">Tech cell corporate</p>
+                        <div class="job-meta">
+                            <span class="job-meta-item">📍 Lucknow,Up</span>
+                            <span class="job-meta-item">💰 RS-120,000 - RS-150,000</span>
+                            <span class="job-meta-item">⏳ 3 days ago</span>
+                        </div>
+                        <p class="job-description">We're looking for an experienced frontend developer to lead our web development team. You'll work with modern frameworks like React and Vue to build amazing user experiences.</p>
+                        <div class="job-actions">
+                            <span class="job-type">Full-time</span>
+                            <form method="post" action="/apply/" class="apply-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="job_id" value="1">
+                                <input type="hidden" name="job_title" value="Senior Frontend Developer">
+                                <button type="submit" class="btn btn-primary apply-btn">Apply Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="job-card">
+                    <img class="job-logo" src="https://placehold.co/100x100?text=Design+Co" alt="Creative design agency logo with colorful abstract shapes">
+                    <div class="job-info">
+                        <h3 class="job-title">UX/UI Designer</h3>
+                        <p class="job-company">DesignCo</p>
+                        <div class="job-meta">
+                            <span class="job-meta-item">📍 Remote</span>
+                            <span class="job-meta-item">💰 Rs-90,000 - 110,000</span>
+                            <span class="job-meta-item">⏳ 1 week ago</span>
+                        </div>
+                        <p class="job-description">Join our design team to create beautiful, intuitive interfaces for our clients. Strong portfolio required. Experience with Figma and Adobe XD preferred.</p>
+                        <div class="job-actions">
+                            <span class="job-type">Remote</span>
+                            <form method="post" action="/apply/" class="apply-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="job_id" value="2">
+                                <input type="hidden" name="job_title" value="UX/UI Designer">
+                                <button type="submit" class="btn btn-primary apply-btn">Apply Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="job-card">
+                    <img class="job-logo" src="https://placehold.co/100x100?text=Bank+Group" alt="Financial institution logo with conservative dark blue design">
+                    <div class="job-info">
+                        <h3 class="job-title">Data Analyst</h3>
+                        <p class="job-company">Global Bank Group</p>
+                        <div class="job-meta">
+                            <span class="job-meta-item">📍Kanpur</span>
+                            <span class="job-meta-item">Rs-85,000 - Rs-105,000</span>
+                            <span class="job-meta-item">⏳ 2 days ago</span>
+                        </div>
+                        <p class="job-description">Looking for a data analyst to help us make sense of financial data. Experience with SQL, Python, and data visualization tools required.</p>
+                        <div class="job-actions">
+                            <span class="job-type">Full-time</span>
+                            <form method="post" action="/apply/" class="apply-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="job_id" value="3">
+                                <input type="hidden" name="job_title" value="Data Analyst">
+                                <button type="submit" class="btn btn-primary apply-btn">Apply Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-outline">View All Jobs</button>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">Success Stories</h2>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card" style="box-shadow: 10px 10px 20px #a3b1c6,-10px -10px 20px #ffffff;">
+                    <p class="testimonial-text">"CareerConnect helped me find my dream job in just two weeks! The platform is so easy to use and connects you with the best employers."</p>
+                    <div class="testimonial-author">
+                        <img class="testimonial-author-img" src="https://placehold.co/100x100?text=A" alt="Portrait of smiling woman in business attire with short brown hair">
+                        <div class="author-info">
+                            <h4>Akash Raj</h4>
+                            <p>Product Manager at TechStart</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" style="box-shadow: 10px 10px 20px #a3b1c6,-10px -10px 20px #ffffff;">
+                    <p class="testimonial-text">"As a hiring manager, CareerConnect has dramatically improved our recruitment process. We find higher quality candidates in less time."</p>
+                    <div class="testimonial-author">
+                        <img class="testimonial-author-img" src="https://placehold.co/100x100?text=M" alt="Portrait of business executive with glasses and gray suit">
+                        <div class="author-info">
+                            <h4>Raj Tripathi</h4>
+                            <p>HR Director at GlobalCorp</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" style="box-shadow: 10px 10px 10px #a3b1c6,-10px -10px 10px #ffffff;">
+                    <p class="testimonial-text">"The job matching algorithm is incredible. I got interviews for positions that were perfect matches for my skills and experience."</p>
+                    <div class="testimonial-author">
+                        <img class="testimonial-author-img" src="https://placehold.co/100x100?text=J" alt="Young man smiling in casual business attire">
+                        <div class="author-info">
+                            <h4>Shreya verma</h4>
+                            <p>Software Engineer at DataSystems</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}

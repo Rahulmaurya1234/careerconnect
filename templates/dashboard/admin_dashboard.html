@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerConnect | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        #jobsChart, #applicationsChart {
+            height: 250px !important;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: absolute;
+                z-index: 50;
+            }.sidebar.active {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="sidebar bg-white dark:bg-gray-800 w-64 py-6 px-4 shadow-lg h-screen fixed">
+            <div class="flex items-center justify-between mb-8 px-2">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-briefcase text-blue-500 text-2xl"></i>
+                    <h1 class="text-xl font-bold text-gray-800 dark:text-white">CareerConnect</h1>
+                </div>
+                <button id="sidebarToggle" class="md:hidden text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 rounded-lg bg-blue-50 dark:bg-gray-700 transition">
+                            <i class="fas fa-tachometer-alt mr-3 text-blue-500"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-briefcase mr-3 text-green-500"></i>
+                            <span>Job Postings</span>
+                            <span class="ml-auto bg-green-500 text-white text-xs px-2 py-1 rounded-full">24</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-users mr-3 text-purple-500"></i>
+                            <span>Candidates</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-building mr-3 text-yellow-500"></i>
+                            <span>Companies</span>
+                            <span class="ml-auto bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">42</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-chart-pie mr-3 text-red-500"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-envelope mr-3 text-indigo-500"></i>
+                            <span>Messages</span>
+                            <span class="ml-auto bg-indigo-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-3 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-cog mr-3 text-gray-500"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 ml-0 md:ml-64 transition-all duration-300">
+            <!-- Header -->
+            <header class="bg-white dark:bg-gray-800 shadow-sm p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <button id="mobileSidebarToggle" class="md:hidden text-gray-500 dark:text-gray-400 mr-4">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Dashboard Overview</h2>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200">
+                            <i class="fas fa-moon dark:hidden"></i>
+                            <i class="fas fa-sun hidden dark:block"></i>
+                        </button>
+                        <div class="relative">
+                            <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 relative">
+                                <i class="fas fa-bell"></i>
+                                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                            </button>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-600 mr-2">
+                                <img src="https://placehold.co/400x400" alt="Admin user profile photo showing HR manager in formal attire" class="w-full h-full object-cover">
+                            </div>
+                            <span class="text-gray-700 dark:text-gray-200 font-medium">Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="p-6">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="dashboard-card bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition duration-300">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-4">
+                                <i class="fas fa-briefcase text-blue-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Active Jobs</p>
+                                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">1,567</h3>
+                                <p class="text-green-500 text-sm"><span class="font-semibold">+12%</span> from last month</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition duration-300">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 dark:bg-green-900/30 mr-4">
+                                <i class="fas fa-user-tie text-green-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">New Candidates</p>
+                                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">5,842</h3>
+                                <p class="text-green-500 text-sm"><span class="font-semibold">+23%</span> from last month</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition duration-300">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900/30 mr-4">
+                                <i class="fas fa-building text-purple-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Registered Companies</p>
+                                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">426</h3>
+                                <p class="text-green-500 text-sm"><span class="font-semibold">+5%</span> from last month</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition duration-300">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900/30 mr-4">
+                                <i class="fas fa-handshake text-yellow-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">Successful Hires</p>
+                                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">2,189</h3>
+                                <p class="text-green-500 text-sm"><span class="font-semibold">+8%</span> from last month</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Jobs Chart -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Jobs Overview</h3>
+                        <div class="h-64">
+                            <canvas id="jobsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Applications Chart -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Applications Status</h3>
+                        <div class="h-64">
+                            <canvas id="applicationsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Jobs and Candidates -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Recent Job Postings -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Recent Job Postings</h3>
+                            <a href="#" class="text-sm text-blue-500 hover:underline">View All</a>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                                <div class="flex-shrink-0 h-12 w-12 rounded flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 mr-3">
+                                    <i class="fas fa-laptop-code text-blue-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800 dark:text-white">Senior Frontend Developer</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">TechSolutions Inc. • New York • Full-time</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded">Active</span>
+                                        <span class="text-xs text-gray-500 ml-2">Posted 2 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                                <div class="flex-shrink-0 h-12 w-12 rounded flex items-center justify-center bg-green-100 dark:bg-green-900/30 mr-3">
+                                    <i class="fas fa-chart-line text-green-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800 dark:text-white">Marketing Manager</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">GlobalBrands • Remote • Full-time</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded">Active</span>
+                                        <span class="text-xs text-gray-500 ml-2">Posted 5 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                                <div class="flex-shrink-0 h-12 w-12 rounded flex items-center justify-center bg-purple-100 dark:bg-purple-900/30 mr-3">
+                                    <i class="fas fa-user-md text-purple-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800 dark:text-white">Healthcare Consultant</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">HealthPlus • Boston • Contract</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded">Active</span>
+                                        <span class="text-xs text-gray-500 ml-2">Posted 1 week ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Candidates -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Recent Candidates</h3>
+                            <a href="#" class="text-sm text-blue-500 hover:underline">View All</a>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-600 mr-3">
+                                    <img src="https://placehold.co/400x400" alt="Portrait of candidate Alex Johnson, male software engineer with glasses" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800 dark:text-white">Alex Johnson</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Senior Software Engineer • Applied to 3 jobs</p>
+                                </div>
+                                <span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded">Active</span>
+                            </div>
+                            <div class="flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-600 mr-3">
+                                    <img src="https://placehold.co/400x400" alt="Portrait of candidate Maria Garcia, female marketing specialist smiling" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800 dark:text-white">Maria Garcia</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Marketing Specialist • Applied to 5 jobs</p>
+                                </div>
+                                <span class="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded">Active</span>
+                            </div>
+                            <div class="flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-600 mr-3">
+                                    <img src="https://placehold.co/400x400" alt="Portrait of candidate David Kim, male financial analyst in business attire" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800 dark:text-white">David Kim</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Financial Analyst • Applied to 2 jobs</p>
+                                </div>
+                                <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded">Hired</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+
+        mobileSidebarToggle.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.querySelector('html');
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            html.classList.add('dark');
+        } else if (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.classList.add('dark');
+        }
+
+        // Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Jobs Overview Chart
+            const jobsCtx = document.getElementById('jobsChart').getContext('2d');
+            const jobsChart = new Chart(jobsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Posted Jobs',
+                            backgroundColor: '#4f46e5',
+                            data: [450, 520, 610, 580, 670, 730],
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Filled Jobs',
+                            backgroundColor: '#a5b4fc',
+                            data: [320, 390, 420, 370, 450, 490],
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#fff' : '#333'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#fff' : '#333'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#fff' : '#333'
+                            },
+                            grid: {
+                                color: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Applications Status Chart
+            const applicationsCtx = document.getElementById('applicationsChart').getContext('2d');
+            const applicationsChart = new Chart(applicationsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Under Review', 'Interview Stage', 'Rejected', 'Hired'],
+                    datasets: [{
+                        data: [1200, 800, 350, 200],
+                        backgroundColor: [
+                            '#6366f1',
+                            '#8b5cf6',
+                            '#f43f5e',
+                            '#10b981'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#fff' : '#333'
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Update charts when theme changes
+            themeToggle.addEventListener('click', function() {
+                jobsChart.options.scales.x.ticks.color = html.classList.contains('dark') ? '#fff' : '#333';
+                jobsChart.options.scales.y.ticks.color = html.classList.contains('dark') ? '#fff' : '#333';
+                jobsChart.options.scales.y.grid.color = html.classList.contains('dark') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                jobsChart.options.plugins.legend.labels.color = html.classList.contains('dark') ? '#fff' : '#333';
+                jobsChart.update();
+                
+                applicationsChart.options.plugins.legend.labels.color = html.classList.contains('dark') ? '#fff' : '#333';
+                applicationsChart.update();
+            });
+        });
+    </script>
+</body>
+</html>

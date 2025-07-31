@@ -1,0 +1,39 @@
+<!-- accounts/templates/accounts/register.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'accounts/register.css' %}">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <form method="POST">
+        {% csrf_token %}
+        <section class="auth-box">
+    <h2>Create Account</h2>
+      <input type="text" placeholder="Full Name" name= "username" required>
+      <input type="email" placeholder="Email Address" name="email" required>
+      <input type="password" placeholder="Password" name="password" required>
+      <input type="password" placeholder="Confirm Password" name="confirm_password" required>
+      <label for="user_type">User Type</label>
+      <select name="user_type">
+      <option value="job_seeker">Job Seeker</option>
+      <option value="recruiter">Recruiter</option>
+      </select><br><br>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  </section>
+
+    </form>
+    {% if messages %}
+        <ul class="mt-3">
+            {% for message in messages %}
+                <li class="text-danger">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+</body>
+{% endblock %}

@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        .dashboard-view {
+            display: none;
+        }
+        .dashboard-view.active {
+            display: block;
+        }
+        .b{
+            height: 50vh;
+        }
+    </style>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <!-- Mode Selector -->
+        <div class="flex space-x-2 mb-6">
+            <button id="seekerBtn" class="flex-1 py-2 bg-blue-600 text-white rounded-lg font-medium">
+                Job Seeker
+            </button>
+            <button id="recruiterBtn" class="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300">
+                Recruiter
+            </button>
+        </div>
+
+        <!-- Dashboard Views -->
+        <div id="seekerView" class="dashboard-view active">
+            <!-- Search Section -->
+            <div class="bg-white rounded-lg card-shadow p-6 mb-6">
+                <div class="relative">
+                    <input type="text" placeholder="Search jobs, companies..." 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <button class="absolute right-3 top-3 text-blue-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Job Listings -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for job in jobs %}
+                <div class="bg-white rounded-lg card-shadow p-6 hover:translate-y-[-4px] transition-transform">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="font-bold text-lg text-blue-800">{{ job.title }}</h3>
+                            <p class="text-gray-600">{{ job.company }}</p>
+                        </div>
+                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{{ job.job_type }}</span>
+                    </div>
+                    <div class="flex items-center text-sm text-gray-500 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>{{ job.location }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">{{ job.salary }}</span>
+                        {% if user.is_authenticated %}
+                        <a href="/apply/" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Apply Now</a>
+                        {% else %}
+                        <a href="{% url 'register' %}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Apply Now</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="recruiterView" class="dashboard-view">
+            <!-- Post Job Button -->
+            <div class="flex justify-end mb-6">
+                <button id="postJobBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    Post New Job
+                </button>
+            </div>
+
+            <!-- Jobs Dashboard -->
+            <div class="bg-white rounded-lg card-shadow p-6">
+                <div class="grid grid-cols-3 gap-4 mb-6 text-center">
+                    <div class="p-4 border rounded-lg">
+                        <div class="text-2xl font-bold text-blue-800">5</div>
+                        <div class="text-sm text-gray-600">Active Jobs</div>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <div class="text-2xl font-bold text-green-800">24</div>
+                        <div class="text-sm text-gray-600">Applications</div>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <div class="text-2xl font-bold text-purple-800">8</div>
+                        <div class="text-sm text-gray-600">Interviews</div>
+                    </div>
+                </div>
+
+                <!-- Applications List -->
+                <h3 class="font-medium text-lg mb-4">Recent Applications</h3>
+                <div class="space-y-3">
+                    <div class="p-4 border rounded-lg hover:bg-gray-50">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4 class="font-medium">Senior Developer</h4>
+                                <p class="text-sm text-gray-600">Applied 2 days ago</p>
+                            </div>
+                            <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-800">New</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Editor Modal -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg card-shadow w-full max-w-2xl p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Complete Your Profile</h3>
+                <button id="closeProfileModal" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="profileForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Profile Picture</label>
+                    <div class="flex items-center space-x-4">
+                        <img id="profilePreview" src="https://placehold.co/100x100" alt="Profile preview" class="rounded-full h-20 w-20 object-cover">
+                        <button type="button" class="text-blue-600 hover:text-blue-800">Upload Photo</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">First Name</label>
+                        <input type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Last Name</label>
+                        <input type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Professional Headline</label>
+                    <input type="text" placeholder="e.g. Frontend Developer" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Bio</label>
+                    <textarea rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancelProfile" class="px-4 py-2 border rounded-lg hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Save Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+     <div class="b"></div>
+    <script>
+        // Toggle profile dropdown (only if user is authenticated)
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        
+        if (profileBtn && profileDropdown) {
+            profileBtn.addEventListener('click', () => {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        // Toggle between seeker and recruiter views
+        const seekerBtn = document.getElementById('seekerBtn');
+        const recruiterBtn = document.getElementById('recruiterBtn');
+        const seekerView = document.getElementById('seekerView');
+        const recruiterView = document.getElementById('recruiterView');
+        
+        seekerBtn.addEventListener('click', () => {
+            seekerView.classList.add('active');
+            recruiterView.classList.remove('active');
+            seekerBtn.classList.add('bg-blue-600', 'text-white');
+            seekerBtn.classList.remove('bg-gray-200', 'text-gray-700');
+            recruiterBtn.classList.add('bg-gray-200', 'text-gray-700');
+            recruiterBtn.classList.remove('bg-blue-600', 'text-white');
+        });
+        
+        recruiterBtn.addEventListener('click', () => {
+            recruiterView.classList.add('active');
+            seekerView.classList.remove('active');
+            recruiterBtn.classList.add('bg-blue-600', 'text-white');
+            recruiterBtn.classList.remove('bg-gray-200', 'text-gray-700');
+            seekerBtn.classList.add('bg-gray-200', 'text-gray-700');
+            seekerBtn.classList.remove('bg-blue-600', 'text-white');
+        });
+
+        // Profile modal handling
+        const profileModal = document.getElementById('profileModal');
+        const closeProfileModal = document.getElementById('closeProfileModal');
+        const cancelProfile = document.getElementById('cancelProfile');
+        
+        // Note: Profile image click handler removed as profileImage element doesn't exist
+        
+        // Close modal handlers
+        closeProfileModal.addEventListener('click', () => {
+            profileModal.classList.add('hidden');
+        });
+        
+        cancelProfile.addEventListener('click', () => {
+            profileModal.classList.add('hidden');
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                profileModal.classList.add('hidden');
+            }
+        });
+
+        // Form submission (simulated)
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Profile saved successfully!');
+            profileModal.classList.add('hidden');
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,62 @@
+
+
+.gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+        .active-tab {
+            border-left: 4px solid #1e40af;
+            background-color: #f0f7ff;
+        }
+        .application-status--new {
+            background-color: #ecfdf5;
+            color: #065f46;
+        }
+        .application-status--reviewed {
+            background-color: #eff6ff;
+            color: #1e40af;
+        }
+        .application-status--rejected {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+        .chat-message--sent {
+            background-color: #e0f2fe;
+            border-radius: 1rem 1rem 0 1rem;
+        }
+        .chat-message--received {
+            background-color: #f1f5f9;
+            border-radius: 1rem 1rem 1rem 0;
+        }
+        [data-content] {
+            display: none;
+        }
+        [data-content].active {
+            display: block;
+        }
+        .c{
+            height: 30vh;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        .dashboard-view {
+            display: none;
+        }
+        .dashboard-view.active {
+            display: block;
+        }
+        .k{
+            height: 50vh;
+        }

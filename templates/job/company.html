@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerConnect - Unified Job Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+        .active-tab {
+            border-left: 4px solid #1e40af;
+            background-color: #f0f7ff;
+        }
+        .application-status--new {
+            background-color: #ecfdf5;
+            color: #065f46;
+        }
+        .application-status--reviewed {
+            background-color: #eff6ff;
+            color: #1e40af;
+        }
+        .application-status--rejected {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <img src="https://placehold.co/40x40" alt="CareerConnect logo - a networking graph connecting briefcase and user icons" class="h-10">
+                    <span class="font-bold text-xl">CareerConnect</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <button id="seekerModeBtn" class="px-4 py-2 rounded-lg bg-white text-blue-800 font-medium">Job Seeker</button>
+                    <button id="recruiterModeBtn" class="px-4 py-2 rounded-lg text-white hover:bg-blue-800 font-medium">Recruiter</button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="p-2 rounded-full hover:bg-blue-800">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute top-0 right-0 h-3 w-3 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="https://placehold.co/36x36" alt="User profile picture placeholder" class="rounded-full h-9 w-9 object-cover">
+                        <span class="hidden md:inline">My Profile</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="bg-white border-r">
+            <div class="p-4">
+                <div class="space-y-1 mt-6">
+                    <button id="dashboardTab" class="w-full text-left px-4 py-3 rounded-lg active-tab">
+                        <i class="fas fa-chart-line mr-3 text-blue-800"></i>
+                        Dashboard
+                    </button>
+                    <button id="jobsTab" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-briefcase mr-3 text-gray-600"></i>
+                        Jobs
+                    </button>
+                    <button id="applicationsTab" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-file-alt mr-3 text-gray-600"></i>
+                        Applications
+                    </button>
+                    <button id="messagesTab" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-envelope mr-3 text-gray-600"></i>
+                        Messages
+                    </button>
+                    <button id="profileTab" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-user mr-3 text-gray-600"></i>
+                        Profile
+                    </button>
+                    <div class="border-t mt-4 pt-4">
+                        <button id="postJobTab" class="w-full text-left px-4 py-3 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200">
+                            <i class="fas fa-plus-circle mr-3"></i>
+                            Post New Job
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="p-8 overflow-auto">
+            <!-- Current Mode Indicator -->
+            <div class="flex items-center mb-6">
+                <div class="bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm font-medium">
+                    <i class="fas fa-user-tie mr-2"></i> Recruiter Dashboard
+                </div>
+                <div class="ml-4 bg-gray-100 text-gray-800 px-4 py-1 rounded-full text-sm font-medium">
+                    <i class="fas fa-search mr-2"></i> Job Seeker Dashboard
+                </div>
+            </div>
+
+            <!-- Dual Dashboard Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Recruiter Dashboard -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-user-tie mr-2 text-blue-600"></i> Recruiter Tools
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <div class="text-blue-800 font-bold text-2xl mb-1">12</div>
+                            <div class="text-sm text-gray-600">Active Jobs</div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                            <div class="text-green-800 font-bold text-2xl mb-1">47</div>
+                            <div class="text-sm text-gray-600">New Applicants</div>
+                        </div>
+                    </div>
+                    <h4 class="font-medium text-gray-700 mb-3">Recent Applications</h4>
+                    <div class="space-y-3">
+                        <div class="p-3 border rounded-lg hover:bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div class="font-medium">Frontend Developer</div>
+                                    <div class="text-sm text-gray-600">Applied 2 hours ago</div>
+                                </div>
+                                <span class="px-2 py-1 text-xs rounded-full application-status--new">New</span>
+                            </div>
+                        </div>
+                        <div class="p-3 border rounded-lg hover:bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <div class="font-medium">UX Designer</div>
+                                    <div class="text-sm text-gray-600">Applied 1 day ago</div>
+                                </div>
+                                <span class="px-2 py-1 text-xs rounded-full application-status--reviewed">Reviewed</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 py-2 border border-dashed border-gray-300 rounded-lg text-gray-500 hover:bg-gray-100">
+                        <i class="fas fa-plus mr-2"></i> Post New Job
+                    </button>
+                </div>
+
+                <!-- Job Seeker Dashboard -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-search mr-2 text-purple-600"></i> Job Seeker Tools
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                            <div class="text-purple-800 font-bold text-2xl mb-1">5</div>
+                            <div class="text-sm text-gray-600">Applications Sent</div>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                            <div class="text-yellow-800 font-bold text-2xl mb-1">3</div>
+                            <div class="text-sm text-gray-600">Interviews</div>
+                        </div>
+                    </div>
+                    <h4 class="font-medium text-gray-700 mb-3">Recommended Jobs</h4>
+                    <div class="space-y-3">
+                        <div class="p-3 border rounded-lg hover:bg-gray-50">
+                            <div class="font-medium">Senior React Developer</div>
+                            <div class="text-sm text-gray-600 mb-1">TechCorp • Remote • $120k-$150k</div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Full-time</span>
+                                <button class="text-sm text-blue-600 hover:text-blue-800">Apply Now</button>
+                            </div>
+                        </div>
+                        <div class="p-3 border rounded-lg hover:bg-gray-50">
+                            <div class="font-medium">Product Designer</div>
+                            <div class="text-sm text-gray-600 mb-1">DesignHub • Hybrid • $95k-$120k</div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Contract</span>
+                                <button class="text-sm text-blue-600 hover:text-blue-800">Apply Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 py-2 bg-purple-100 text-purple-800 rounded-lg hover:bg-purple-200">
+                        <i class="fas fa-search mr-2"></i> Browse All Jobs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Jobs Section -->
+            <div class="mt-12">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Latest Job Opportunities</h2>
+                    <div class="flex space-x-2">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">Filter</button>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Search Jobs</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Job Card 1 -->
+                    <div class="bg-white rounded-xl shadow-md job-card transition-all">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-3">
+                                <img src="https://placehold.co/48x48" alt="TechCorp company logo - modern tech company branding" class="h-12 w-12 object-contain">
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">

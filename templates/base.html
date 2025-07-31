@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Career Connect{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'base.css' %}">
+    <script src="{% static 'js/main.js' %}" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="{% url 'home' %}" class="logo">CareerConnect</a>
+                <div class="nav-links">
+                    <a href="{% url 'home' %}">Home</a>
+                    <a href="{% url 'jobs' %}">Jobs</a>
+                    <a href="{% url 'about' %}">About</a>
+                    <a href="{% url 'contact' %}">Contact</a>
+                </div>
+                <div class="nav-auth">
+                    {% if user.is_authenticated %}
+                        <div class="user-profile-dropdown">
+                            <div class="profile-trigger" onclick="toggleProfileDropdown()" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; border-radius: 25px; transition: all 0.3s ease; background-color: rgba(0, 119, 204, 0.05); border: 1px solid transparent;">
+                                <!-- Welcome text -->
+                                <span style="color: #333; font-size: 14px; font-weight: 500;">Welcome, {{ user.first_name|default:user.username }}</span>
+                                <!-- Profile Photo -->
+                                <img src="{% static 'images/default-profile.svg' %}" 
+                                     alt="Profile Photo" 
+                                     class="profile-photo" 
+                                     style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #0077cc; transition: transform 0.3s ease;">
+                            </div>
+                            <div class="profile-dropdown-menu" id="profileDropdown">
+                                <!-- Profile Header with User Details -->
+                                <div class="profile-header">
+                                    <div class="profile-avatar-large">
+                                        <img src="{% static 'images/default-profile.svg' %}" 
+                                             alt="{{ user.first_name|default:user.username }}" 
+                                             style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                    </div>
+                                    <div class="profile-info">
+                                        <h4>{{ user.first_name|default:user.username }} {{ user.last_name|default:'' }}</h4>
+                                        <p>{{ user.email|default:'No email provided' }}</p>
+                                        <span class="user-type-badge">
+                                            {% if user.is_staff %}
+                                                Admin
+                                            {% elif user.is_superuser %}
+                                                Super Admin
+                                            {% else %}
+                                                Job Seeker
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Menu Items -->
+                                <div class="profile-menu-items">
+                                    <a href="#" class="profile-menu-item">
+                                        <span class="menu-icon">👤</span>
+                                        View Profile
+                                    </a>
+                                    <a href="#" class="profile-menu-item">
+                                        <span class="menu-icon">✏️</span>
+                                        Edit Profile
+                                    </a>
+                                    <a href="#" class="profile-menu-item">
+                                        <span class="menu-icon">📋</span>
+                                        My Applications
+                                    </a>
+                                    <a href="#" class="profile-menu-item">
+                                        <span class="menu-icon">💼</span>
+                                        Saved Jobs
+                                    </a>
+                                    <div class="profile-menu-divider"></div>
+                                    <a href="#" class="profile-menu-item">
+                                        <span class="menu-icon">⚙️</span>
+                                        Account Settings
+                                    </a>
+                                    <a href="#" class="profile-menu-item">
+                                        <span class="menu-icon">🔔</span>
+                                        Notifications
+                                    </a>
+                                    <a href="#" class="profile-menu-item">
+                                        <span class="menu-icon">❓</span>
+                                        Help & Support
+                                    </a>
+                                    <div class="profile-menu-divider"></div>
+                                    <form method="post" action="{% url 'logout' %}" style="margin: 0; padding: 0;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="profile-menu-item logout-item" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer; padding: 0.8rem 1.5rem; font-size: 0.9rem; color: #333; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.5rem;">
+                                            <span class="menu-icon">🚪</span>
+                                            Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}"><button class="btn btn-outline">Login</button></a>
+                        <a href="{% url 'register' %}"><button class="btn btn-primary">Register</button></a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <hr>
+
+    <!-- Messages display -->
+    {% if messages %}
+        <div class="messages-container">
+            <div class="container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                        <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% block content %}
+    <!-- Page specific content will go here -->
+    {% endblock %}
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="{% url 'home' %}" class="footer-logo">CareerConnect</a>
+                    <p class="footer-description">Connecting talented professionals with top companies worldwide. Your career journey starts here.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com">FB</a>
+                        <a href="https://twitter.com">TW</a>
+                        <a href="https://www.instagram.com/amazing_love_07/">IG</a>
+                        <a href="https://www.linkedin.com/in/rahul-maurya-2003ji/">IN</a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>For Candidates</h3>
+                    <ul>
+                        <li><a href="{% url 'jobs' %}">Browse Jobs</a></li>
+                        <li><a href="#">Job Alerts</a></li>
+                        <li><a href="#">Career Advice</a></li>
+                        <li><a href="#">Resume Builder</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>For Employers</h3>
+                    <ul>
+                        <li><a href="#">Post a Job</a></li>
+                        <li><a href="#">Browse Candidates</a></li>
+                        <li><a href="#">Recruitment Solutions</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 CareerConnect. All rights reserved by Rahulmaurya | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

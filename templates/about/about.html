@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<head>
+  <title>{% block title %}About Us {% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'about/about.css' %}">
+</head>
+<body class="bg-gray-100">
+  <section class="about-hero">
+    <h1>About CareerConnect</h1>
+    <p>
+      CareerConnect is a rising job portal based in Rooma, Kanpur (Uttar Pradesh),
+      helping companies find great talent and job seekers land dream roles using AI-based recommendations.
+    </p>
+  </section>
+
+  <!-- Team Section -->
+  <section class="team-section">
+    <h2>Our Core Team</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <h3>Rahul Maurya</h3>
+        <p>Founder & CEO</p>
+      </div>
+      <div class="team-card">
+        <h3>Devansh Agrahi</h3>
+        <p>Co-Founder & CTO</p>
+      </div>
+      <div class="team-card">
+        <h3>Dipanshu Prajapati</h3>
+        <p>Marketing Head</p>
+      </div>
+      <div class="team-card">
+        <h3>Akash Shakya</h3>
+        <p>Operations Manager</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="map-section">
+    <h2>Our Location - Rooma, Kanpur (U.P)</h2>
+    <div class="map-container">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.470537213974!2d80.41855597519827!3d26.858547662349854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399c395a7d5caaab%3A0x3a94c61885363e6a!2sRooma%2C%20Uttar%20Pradesh%20208001!5e0!3m2!1sen!2sin!4v1722000000000!5m2!1sen!2sin"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="text-align:center; padding: 20px; color: #94a3b8;">&copy; 2025 CareerConnect. All rights reserved.</p>
+    </div>
+</body>
+{% endblock %}

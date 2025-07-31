@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerConnect - Complete Job Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+        .active-tab {
+            border-left: 4px solid #1e40af;
+            background-color: #f0f7ff;
+        }
+        .application-status--new {
+            background-color: #ecfdf5;
+            color: #065f46;
+        }
+        .application-status--reviewed {
+            background-color: #eff6ff;
+            color: #1e40af;
+        }
+        .application-status--rejected {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+        .chat-message--sent {
+            background-color: #e0f2fe;
+            border-radius: 1rem 1rem 0 1rem;
+        }
+        .chat-message--received {
+            background-color: #f1f5f9;
+            border-radius: 1rem 1rem 1rem 0;
+        }
+        [data-content] {
+            display: none;
+        }
+        [data-content].active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <img src="https://placehold.co/40x40" alt="CareerConnect logo - a networking graph connecting briefcase and user icons" class="h-10">
+                    <span class="font-bold text-xl">CareerConnect</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-4 flex-1 mx-8">
+                    <div class="relative w-full max-w-xl">
+                        <input type="text" id="globalSearch" placeholder="Search jobs, companies, skills..." 
+                               class="w-full px-4 py-2 rounded-lg text-gray-800 focus:outline-none">
+                        <button class="absolute right-3 top-2 text-gray-500">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="notificationBtn" class="p-2 rounded-full hover:bg-blue-800 relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute top-0 right-0 h-3 w-3 rounded-full bg-red-500"></span>
+                        </button>
+                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg py-1 z-50">
+                            <!-- Notifications will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img id="profileImage" src="https://placehold.co/36x36" alt="User profile picture placeholder" class="rounded-full h-9 w-9 object-cover cursor-pointer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="bg-white border-r">
+            <div class="p-4">
+                <div class="flex space-x-2 mb-6">
+                    <button id="seekerModeBtn" class="flex-1 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium">
+                        <i class="fas fa-search mr-2"></i> Job Seeker
+                    </button>
+                    <button id="recruiterModeBtn" class="flex-1 px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                        <i class="fas fa-user-tie mr-2"></i> Recruiter
+                    </button>
+                </div>
+                <div class="space-y-1 mt-2">
+                    <button data-tab="dashboard" class="w-full text-left px-4 py-3 rounded-lg active-tab">
+                        <i class="fas fa-chart-line mr-3 text-blue-800"></i>
+                        Dashboard
+                    </button>
+                    <button data-tab="jobs" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-briefcase mr-3 text-gray-600"></i>
+                        Jobs
+                    </button>
+                    <button data-tab="applications" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-file-alt mr-3 text-gray-600"></i>
+                        Applications
+                    </button>
+                    <button data-tab="messages" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-envelope mr-3 text-gray-600"></i>
+                        Messages
+                    </button>
+                    <button data-tab="profile" class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-user mr-3 text-gray-600"></i>
+                        Profile
+                    </button>
+                    <div class="border-t mt-4 pt-4">
+                        <button id="postJobBtn" class="w-full text-left px-4 py-3 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200">
+                            <i class="fas fa-plus-circle mr-3"></i>
+                            Post New Job
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="p-8 overflow-auto">
+            <!-- Dashboard Content -->
+            <div data-content="dashboard" class="active">
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Seeker Stats -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-600">Applications Sent</p>
+                                <p class="text-3xl font-bold text-purple-800">5</p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i class="fas fa-paper-plane text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-600">Interviews</p>
+                                <p class="text-3xl font-bold text-blue-800">3</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i class="fas fa-handshake text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-600">Profile Views</p>
+                                <p class="text-3xl font-bold text-green-800">28</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-eye text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Jobs -->
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Recommended For You</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Job cards will be loaded here -->
+                </div>
+
+                <!-- Recent Activity -->
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Activity</h2>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="divide-y divide-gray-200">
+                        <!-- Activity items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs Content -->
+            <div data-content="jobs">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Browse Jobs</h2>
+                    <div class="flex space-x-3">
+                        <div class="relative">
+                            <select id="jobFilter" class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none">
+                                <option>All Categories</option>
+                                <option>Technology</option>
+                                <option>Design</option>
+                                <option>Marketing</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <select id="locationFilter" class="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none">
+                                <option>All Locations</option>
+                                <option>Remote</option>
+                                <option>Bangalore</option>
+                                <option>Mumbai</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posted</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- Job listings will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Applications Content -->
+            <div data-content="applications">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Your Applications</h2>
+                
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied On</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- Applications will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Messages Content -->
+            <div data-content="messages">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Messages</h2>
+                
+                <div class="flex">
+                    <!-- Conversations List -->
+                    <div class="w-1/3 pr-6">
+                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                            <div class="border-b border-gray-200 p-4">
+                                <h3 class="font-medium">Conversations</h3>
+                            </div>
+                            <div class="divide-y divide-gray-200">
+                                <!-- Conversations will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message Area -->
+                    <div class="w-2/3">
+                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                            <div class="border-b border-gray-200 p-4">
+                                <h3 id="messageRecipient" class="font-medium">Select a conversation</h3>
+                            </div>
+                            <div id="messageContainer" class="h-96 overflow-y-auto p-4 space-y-3">
+                                <!-- Messages will be loaded here -->
+                                <div class="text-center text-gray-500 py-8">
+                                    Select a conversation to view messages
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-200 p-4">
+                                <div class="flex">
+                                    <input id="messageInput" type="text" placeholder="Type a message..." class="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none
