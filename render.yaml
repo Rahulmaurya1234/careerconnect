@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: careerconnect
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn careerconnect.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: careerconnect.settings
+      - key: SECRET_KEY
+        value: django-insecure-)f2v8@z98v%(r+qen*nt(=eww)&lmnpdw(ub@nsl2t&uh5=vx7
+      - key: ALLOWED_HOSTS
+        value: careerconnect.onrender.com
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://careerconnect.onrender.com
