@@ -2,7 +2,9 @@ services:
   - type: web
     name: careerconnect
     env: python
-    buildCommand: ""
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
     startCommand: gunicorn careerconnect.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
