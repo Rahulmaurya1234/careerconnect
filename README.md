@@ -36,21 +36,79 @@ The application follows Django’s MVC (MVT) architecture and is built for scala
 ## Project Structure
 
 careerconnect/
-├── about/
-├── accounts/
-├── contact/
-├── core/
-├── customer_dashboard/
-├── dashboard/
-├── jobs/
-├── ml/
-├── profilename/
-├── resumes/
-├── static/
-├── templates/
-├── manage.py
-├── db.sqlite3
-├── requirements.txt
+├── about/ # About page module
+│ ├── migrations/
+│ ├── models.py
+│ ├── views.py
+│ ├── urls.py
+│
+├── accounts/ # User authentication & profile
+│ ├── migrations/
+│ ├── models.py
+│ ├── views.py
+│ ├── forms.py
+│ ├── urls.py
+│
+├── contact/ # Contact form module
+│ ├── migrations/
+│ ├── models.py
+│ ├── views.py
+│ ├── urls.py
+│
+├── core/ # Main app logic (home, base templates)
+│ ├── views.py
+│ ├── urls.py
+│
+├── customer_dashboard/ # User dashboard features
+│ ├── migrations/
+│ ├── models.py
+│ ├── views.py
+│ ├── urls.py
+│
+├── dashboard/ # Admin / analytics dashboard
+│ ├── migrations/
+│ ├── views.py
+│ ├── urls.py
+│
+├── jobs/ # Job listings & applications
+│ ├── migrations/
+│ ├── models.py
+│ ├── views.py
+│ ├── urls.py
+│
+├── ml/ # Machine learning module (optional)
+│ ├── models.py
+│ ├── views.py
+│
+├── profilename/ # Profile management
+│ ├── migrations/
+│ ├── models.py
+│ ├── views.py
+│
+├── resumes/ # Resume upload & handling
+│ ├── migrations/
+│ ├── models.py
+│ ├── views.py
+│
+├── static/ # Static files (CSS, JS, Images)
+│ ├── css/
+│ ├── js/
+│ ├── images/
+│
+├── templates/ # HTML templates
+│ ├── base.html
+│ ├── about/
+│ ├── accounts/
+│ ├── contact/
+│ ├── core/
+│ ├── dashboard/
+│ ├── jobs/
+│ ├── profilename/
+│
+├── manage.py # Django management script
+├── db.sqlite3 # Database file
+├── requirements.txt # Project dependencies
+├── render.yaml # Deployment configuration
 
 
 ---
@@ -110,6 +168,23 @@ Future Improvements :
   Notification system
   Resume parsing
   Improved UI/UX
+  
+## Screenshots
+
+<p align="center">
+  <img src="Home.png" width="45%"/>
+  <img src="Job.png" width="45%"/>
+</p>
+
+<p align="center">
+  <img src="dashboard.png" width="45%"/>
+  <img src="Profile.png" width="45%"/>
+</p>
+
+<p align="center">
+  <img src="about.png" width="45%"/>
+</p>
+
 
 ## Author
 
