@@ -36,80 +36,131 @@ The application follows Django’s MVC (MVT) architecture and is built for scala
 ## Project Structure
 
 careerconnect/
-├── about/ # About page module
+├── about/
 │ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
 │ ├── models.py
-│ ├── views.py
+│ ├── tests.py
 │ ├── urls.py
+│ └── views.py
 │
-├── accounts/ # User authentication & profile
+├── accounts/
 │ ├── migrations/
-│ ├── models.py
-│ ├── views.py
+│ ├── admin.py
+│ ├── apps.py
 │ ├── forms.py
-│ ├── urls.py
-│
-├── contact/ # Contact form module
-│ ├── migrations/
 │ ├── models.py
-│ ├── views.py
+│ ├── tests.py
 │ ├── urls.py
+│ └── views.py
 │
-├── core/ # Main app logic (home, base templates)
-│ ├── views.py
+├── careerconnect/ # Main project config
+│ ├── init.py
+│ ├── asgi.py
+│ ├── settings.py
 │ ├── urls.py
+│ └── wsgi.py
 │
-├── customer_dashboard/ # User dashboard features
+├── contact/
 │ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
 │ ├── models.py
-│ ├── views.py
+│ ├── tests.py
 │ ├── urls.py
+│ └── views.py
 │
-├── dashboard/ # Admin / analytics dashboard
-│ ├── migrations/
+├── core/
 │ ├── views.py
+│ └── urls.py
+│
+├── customer_dashboard/
+│ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
+│ ├── models.py
+│ ├── tests.py
 │ ├── urls.py
+│ └── views.py
 │
-├── jobs/ # Job listings & applications
+├── dashboard/
 │ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
 │ ├── models.py
-│ ├── views.py
+│ ├── tests.py
 │ ├── urls.py
+│ └── views.py
 │
-├── ml/ # Machine learning module (optional)
-│ ├── models.py
-│ ├── views.py
-│
-├── profilename/ # Profile management
+├── jobs/
 │ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
 │ ├── models.py
-│ ├── views.py
+│ ├── tests.py
+│ ├── urls.py
+│ └── views.py
 │
-├── resumes/ # Resume upload & handling
+├── ml/
 │ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
 │ ├── models.py
-│ ├── views.py
+│ ├── tests.py
+│ └── views.py
 │
-├── static/ # Static files (CSS, JS, Images)
-│ ├── css/
-│ ├── js/
-│ ├── images/
+├── profilename/
+│ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
+│ ├── models.py
+│ ├── tests.py
+│ └── views.py
 │
-├── templates/ # HTML templates
-│ ├── base.html
+├── resumes/
+│ ├── migrations/
+│ ├── admin.py
+│ ├── apps.py
+│ ├── models.py
+│ ├── tests.py
+│ └── views.py
+│
+├── static/
 │ ├── about/
 │ ├── accounts/
 │ ├── contact/
 │ ├── core/
-│ ├── dashboard/
-│ ├── jobs/
-│ ├── profilename/
+│ ├── customer_dashboard/
+│ ├── images/
+│ ├── js/
+│ └── base.css
 │
-├── manage.py # Django management script
-├── db.sqlite3 # Database file
-├── requirements.txt # Project dependencies
-├── render.yaml # Deployment configuration
-
+├── staticfiles/ # Collected static files (production)
+│
+├── templates/
+│ ├── about/
+│ │ └── about.html
+│ ├── accounts/
+│ ├── contact/
+│ ├── core/
+│ │ └── home.html
+│ ├── dashboard/
+│ ├── job/
+│ │ └── company.html
+│ ├── jobs/
+│ │ ├── c1.html
+│ │ └── jobs.html
+│ ├── profilename/
+│ │ └── profilename.html
+│ └── base.html
+│
+├── manage.py
+├── db.sqlite3
+├── requirements.txt
+├── render.yaml
+├── Pipfile
+└── Pipfile.lock
 
 ---
 
